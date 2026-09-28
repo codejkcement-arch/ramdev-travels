@@ -1,0 +1,1 @@
+export default function Footer(){return <footer style={{padding:"30px 0",marginTop:50,background:"#111827",color:"white"}}><div className="container">© {new Date().getFullYear()} Ramdev Travels</div></footer>}
