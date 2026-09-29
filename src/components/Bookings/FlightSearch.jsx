@@ -1,0 +1,4 @@
+import {useState} from "react"; import {searchFlights} from "../../services/bookingService";
+export default function FlightSearch(){const [source,setSource]=useState("Jodhpur"),[destination,setDestination]=useState("Delhi"),[rows,setRows]=useState([]);
+ async function search(){setRows((await searchFlights({source,destination})).data)}
+ return <div className="card"><h2>Flight Search</h2><input value={source} onChange={e=>setSource(e.target.value)} placeholder="From" style={{padding:10,marginRight:8}}/><input value={destination} onChange={e=>setDestination(e.target.value)} placeholder="To" style={{padding:10,marginRight:8}}/><button className="btn" onClick={search}>Search</button>{rows.map(f=><div key={f.id} style={{padding:15,borderTop:"1px solid #ddd"}}><b>{f.airline} {f.flight_number}</b> · ₹{f.fare}<br/>{f.source} → {f.destination}</div>)}</div>}

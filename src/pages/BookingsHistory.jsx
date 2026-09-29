@@ -1,0 +1,2 @@
+import {useEffect,useState} from "react"; import {history} from "../services/bookingService";
+export default function BookingsHistory(){const [rows,setRows]=useState([]);useEffect(()=>{history().then(r=>setRows(r.data))},[]);return <div className="container" style={{marginTop:30}}><div className="card"><h2>My Bookings</h2>{rows.map(b=><div key={b.id} style={{padding:12,borderTop:"1px solid #ddd"}}><b>{b.pnr}</b> · {b.booking_type} · ₹{b.amount} · {b.status}</div>)}</div></div>}
