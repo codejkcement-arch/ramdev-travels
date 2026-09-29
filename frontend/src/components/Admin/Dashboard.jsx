@@ -1,0 +1,2 @@
+import {useEffect,useState} from "react"; import api from "../../services/api";
+export default function Dashboard(){const [s,setS]=useState(null);useEffect(()=>{api.get("/admin/stats").then(r=>setS(r.data))},[]);return <div className="card"><h2>Admin Dashboard</h2>{s&&<div style={{display:"flex",gap:30}}><div>Users<br/><b>{s.users}</b></div><div>Bookings<br/><b>{s.bookings}</b></div><div>Revenue<br/><b>₹{s.revenue}</b></div></div>}</div>}

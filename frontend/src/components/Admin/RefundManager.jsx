@@ -1,0 +1,3 @@
+import {useEffect,useState} from "react"; import api from "../../services/api";
+export default function RefundManager(){const [rows,setRows]=useState([]);useEffect(()=>{api.get("/admin/bookings").then(r=>setRows(r.data))},[]);async function refund(id){await api.post(`/admin/refund/${id}`);setRows(rows.map(x=>x.id===id?{...x,status:"REFUNDED",payment_status:"REFUNDED"}:x))}
+return <div className="card"><h2>Refund Manager</h2>{rows.map(b=><div key={b.id} style={{padding:10,borderTop:"1px solid #ddd"}}>{b.pnr} · ₹{b.amount} · {b.payment_status} {b.payment_status==="PAID"&&<button className="btn" style={{marginLeft:10}} onClick={()=>refund(b.id)}>Refund</button>}</div>)}</div>}

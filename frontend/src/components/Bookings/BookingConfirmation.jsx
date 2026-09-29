@@ -1,0 +1,1 @@
+export default function BookingConfirmation({booking}){return <div className="card"><h2>Booking Created</h2><p>PNR: <b>{booking.pnr}</b></p><p>Status: {booking.status}</p><p>Amount: ₹{booking.amount}</p></div>}

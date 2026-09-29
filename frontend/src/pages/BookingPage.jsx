@@ -1,0 +1,4 @@
+import {useState} from "react"; import {useDispatch} from "react-redux"; import {createBooking} from "../services/bookingService"; import BusSearch from "../components/Bookings/BusSearch"; import SeatSelection from "../components/Bookings/SeatSelection"; import {setCurrent} from "../store/bookingSlice"; import {useNavigate} from "react-router-dom";
+export default function BookingPage(){const [bus,setBus]=useState(null),[booking,setBooking]=useState(null),dispatch=useDispatch(),nav=useNavigate();
+ async function confirm(seats){try{const r=await createBooking({booking_type:"bus",item_id:bus.id,seats});setBooking(r.data);dispatch(setCurrent(r.data));nav("/payment")}catch(e){alert(e.response?.data?.detail||"Booking failed")}}
+ return <div className="container" style={{marginTop:30}}>{!bus&&!booking&&<BusSearch onSelect={setBus}/>} {bus&&!booking&&<SeatSelection bus={bus} onConfirm={confirm}/>}</div>}
