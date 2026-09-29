@@ -7,8 +7,8 @@ class Settings(BaseSettings):
     SECRET_KEY: str = ""
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
     DATABASE_URL: str = "sqlite+aiosqlite:///./ramdev.db"
-    CORS_ORIGINS: List[str] = ["http://localhost:5173"]
-    CORS_ORIGIN_REGEX: str | None = None
+    CORS_ORIGINS: List[str] = ["http://localhost:5173", "https://ramdev-travels-web.onrender.com"]
+    CORS_ORIGIN_REGEX: str | None = r"https://.*.onrender.com"
     RAZORPAY_KEY_ID: str = ""
     RAZORPAY_KEY_SECRET: str = ""
     RAZORPAY_WEBHOOK_SECRET: str = ""
