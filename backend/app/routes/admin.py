@@ -8,6 +8,7 @@ from app.models.user import User
 from app.models.booking import Booking
 from app.models.refund import Refund
 from app.models.payment import Payment
+from app.models.bus import Bus, Seat
 from app.services.payment_service import refund_payment
 
 router = APIRouter()
@@ -45,3 +46,52 @@ async def refund(booking_id: int, admin=Depends(admin_user), db: AsyncSession = 
     db.add(refund)
     await db.commit()
     return {"message": "Refund processed", "refund_id": refund.id}
+
+@router.get("/buses")
+async def admin_buses(admin=Depends(admin_user), db: AsyncSession = Depends(get_db)):
+    rows = await db.scalars(select(Bus).order_by(Bus.id.desc()))
+    return [{
+        "id": b.id,
+        "operator": b.operator,
+        "bus_number": b.bus_number,
+        "source": b.source,
+        "destination": b.destination,
+        "departure_time": b.departure_time,
+        "arrival_time": b.arrival_time,
+        "fare": b.fare,
+        "total_seats": b.total_seats
+    } for b in rows.all()]
+
+
+@router.post("/buses")
+async def create_bus(data: dict, admin=Depends(admin_user), db: AsyncSession = Depends(get_db)):
+    bus = Bus(
+        operator=data["operator"],
+        bus_number=data["bus_number"],
+        source=data["source"],
+        destination=data["destination"],
+        departure_time=data["departure_time"],
+        arrival_time=data["arrival_time"],
+        fare=float(data["fare"]),
+        total_seats=int(data.get("total_seats", 40))
+    )
+
+    db.add(bus)
+    await db.flush()
+
+    for i in range(1, bus.total_seats + 1):
+        db.add(
+            Seat(
+                bus_id=bus.id,
+                seat_number=f"{(i+1)//2}{'L' if i%2 else 'R'}"
+            )
+        )
+
+    await db.commit()
+    await db.refresh(bus)
+
+    return {
+        "message": "Bus created",
+        "id": bus.id,
+        "bus_number": bus.bus_number
+    }
