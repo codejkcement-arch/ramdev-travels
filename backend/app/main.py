@@ -3,12 +3,30 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.database import init_db
+from app.models.user import User
+from app.utils.security import hash_password
+from sqlalchemy import select
+from app.database import AsyncSessionLocal
 from app.routes import auth, buses, flights, cinema, bookings, payments, admin, webhooks
+
+async def ensure_admin_user():
+    if not settings.ADMIN_EMAIL or not settings.ADMIN_PASSWORD:
+        return
+    async with AsyncSessionLocal() as db:
+        user = await db.scalar(select(User).where(User.email == settings.ADMIN_EMAIL))
+        if user:
+            if not user.is_admin:
+                user.is_admin = True
+                await db.commit()
+        else:
+            db.add(User(name="Admin", email=settings.ADMIN_EMAIL, password_hash=hash_password(settings.ADMIN_PASSWORD), is_admin=True))
+            await db.commit()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     if settings.AUTO_CREATE_TABLES:
         await init_db()
+    await ensure_admin_user()
     yield
 
 app = FastAPI(title=settings.APP_NAME, version="1.0.0", lifespan=lifespan)
