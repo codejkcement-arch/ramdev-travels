@@ -8,6 +8,7 @@ from app.utils.security import hash_password
 from sqlalchemy import select
 from app.database import AsyncSessionLocal
 from app.routes import auth, buses, flights, cinema, bookings, payments, admin, webhooks
+from app.education.api.v1.router import api_router as education_router
 
 async def ensure_admin_user():
     if not settings.ADMIN_EMAIL or not settings.ADMIN_PASSWORD:
@@ -52,6 +53,7 @@ app.include_router(bookings.router, prefix="/api/bookings", tags=["bookings"])
 app.include_router(payments.router, prefix="/api/payments", tags=["payments"])
 app.include_router(admin.router, prefix="/api/admin", tags=["admin"])
 app.include_router(webhooks.router, prefix="/api/webhooks", tags=["webhooks"])
+app.include_router(education_router, prefix="/api/education")
 
 @app.get("/health")
 async def health():

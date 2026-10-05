@@ -1,3 +1,9 @@
 import {BrowserRouter,Routes,Route} from "react-router-dom"; import Navbar from "./components/Common/Navbar"; import Footer from "./components/Common/Footer";
-import HomePage from "./pages/HomePage"; import BookingPage from "./pages/BookingPage"; import PaymentPage from "./pages/PaymentPage"; import AdminPage from "./pages/AdminPage"; import NotFound from "./pages/NotFound"; import BookingsHistory from "./pages/BookingsHistory"; import Login from "./components/Auth/Login"; import Register from "./components/Auth/Register";
-export default function App(){return <BrowserRouter><Navbar/><Routes><Route path="/" element={<HomePage/>}/><Route path="/login" element={<Login/>}/><Route path="/register" element={<Register/>}/><Route path="/booking" element={<BookingPage/>}/><Route path="/payment" element={<PaymentPage/>}/><Route path="/bookings" element={<BookingsHistory/>}/><Route path="/admin" element={<AdminPage/>}/><Route path="*" element={<NotFound/>}/></Routes><Footer/></BrowserRouter>}
+import HomePage from "./pages/HomePage";
+import EducationHome from "./education/Home";
+import StudentDashboard from "./education/StudentDashboard";
+import EducationTestPage from "./education/TestPage"; import BookingPage from "./pages/BookingPage"; import PaymentPage from "./pages/PaymentPage"; import AdminPage from "./pages/AdminPage"; import NotFound from "./pages/NotFound"; import BookingsHistory from "./pages/BookingsHistory"; import Login from "./components/Auth/Login"; import Register from "./components/Auth/Register";
+export default function App(){return <BrowserRouter><Navbar/><Routes><Route path="/" element={<HomePage/>}/><Route path="/login" element={<Login/>}/><Route path="/register" element={<Register/>}/><Route path="/booking" element={<BookingPage/>}/><Route path="/payment" element={<PaymentPage/>}/><Route path="/bookings" element={<BookingsHistory/>}/><Route path="/admin" element={<AdminPage/>}/><Route path="/education" element={<EducationHome />} />
+        <Route path="/education/student" element={<StudentDashboard />} />
+        <Route path="/education/tests/:testId" element={<EducationTestPage />} /><Route path="*" element={<NotFound/>}/>
+      </Routes><Footer/></BrowserRouter>}
