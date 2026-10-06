@@ -1,5 +1,6 @@
+import './education.css';
 import { Link } from 'react-router-dom';
-import { ArrowRight, BookOpen, ClipboardCheck, Users, ShieldCheck, Sparkles } from 'lucide-react';
+import { ArrowRight, BookOpen, ClipboardCheck, Users, GraduationCap, ShieldCheck, Sparkles } from 'lucide-react';
 
 const exams=['REET','Patwari','Gram Sevak','RAS','SSC','CET','Police','Railway'];
 
